@@ -4,13 +4,6 @@ function initGame() {
     const blocklist = init_blocks(grid)
     init_ball(paddle, grid)
 
-
-
-}
-function move_paddle(event, paddle) {
-    paddle.style.left = parseInt(paddle.style.left) - 5 + 'px'
-
-
 }
 function init_paddle(grid) {
 
@@ -21,7 +14,16 @@ function init_paddle(grid) {
     paddle.style.width = paddlewidth + 'px'
     paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
     grid.appendChild(paddle);
-    document.addEventListener('keydown', move_paddle(paddle))
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'a' && parseInt(paddle.style.left) > 5) {
+
+            paddle.style.left = (parseInt(paddle.style.left) - 20) + 'px'
+        }
+        else if (event.key === 'd' && parseInt(paddle.style.left) < 1045) {
+            paddle.style.left = (parseInt(paddle.style.left) + 20) + 'px'
+
+        }
+    })
 
     return paddle;
 
