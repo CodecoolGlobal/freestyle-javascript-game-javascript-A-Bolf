@@ -3,22 +3,28 @@
     width: 1200px;
     height: 600px;
     border: 1px solid;
-    display: flex;
-    flex-direction: column;
 }
 
-.blockrow{
-    display: flex;
-    flex-direction: row;
-}
 
 .block{
- position: absolute;
+position: absolute;
  width: 100px;
  height: 20px;
  background-color: blue;
- border: 1px solid black;
- left: 50px;
+ border: 3px solid white;
+}
 
- 
+.paddle{
+    position: absolute;
+    bottom: 10px;
+    height: 20px;
+    background-color:red;
+}
+
+.ball{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    background-color:green;
+    border-radius: 50%;
 }
