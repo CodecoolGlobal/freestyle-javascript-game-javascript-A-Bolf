@@ -1,0 +1,24 @@
+.grid{
+    position: absolute;
+    width: 1200px;
+    height: 600px;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+}
+
+.blockrow{
+    display: flex;
+    flex-direction: row;
+}
+
+.block{
+ position: absolute;
+ width: 100px;
+ height: 20px;
+ background-color: blue;
+ border: 1px solid black;
+ left: 50px;
+
+ 
+}

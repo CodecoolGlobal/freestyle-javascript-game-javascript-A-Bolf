@@ -1,7 +1,11 @@
-initGame();
-
 function initGame() {
-
-    // Your game can start here, but define separate functions, don't write everything in here :)
+    const row = document.querySelector('.blockrow')
+    for (var i = 0; i < 10; i++) {
+        let block = document.createElement('div')
+        block.classList.add('block')
+        row.appendChild(block);
+    }
 
 }
+
+initGame();
