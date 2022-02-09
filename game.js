@@ -12,6 +12,7 @@ const grid = document.querySelector('.grid')
 const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ball = init_ball(paddle, grid)
+const allPerks = ['no-fall']
 ball.first_shot = true;
 ball.position = [580, 525]
 draw_ball()
@@ -38,9 +39,10 @@ function main() {
     }
     else if (current_key === " " && ball.first_shot) {
         document.ball_movement = setInterval(move_ball, 5);
-        ball.first_shot = false;
 
+        ball.first_shot = false;
     }
+    movePerks()
     draw_ball()
     get_paddle_coords()
     get_ball_coords()
@@ -54,7 +56,6 @@ function main() {
     if (lives === 0) {
         isrunning = false;
     }
-
 }
 document.run = setInterval(main, 5)
 function init_paddle(grid) {
@@ -67,38 +68,34 @@ function init_paddle(grid) {
     grid.appendChild(paddle);
 
     return paddle;
-
 }
 
 function has_won() {
     return !document.querySelector('.block')
 }
-function move_ball(paddle) {
 
+function movePerks() {
+    let perks = document.querySelectorAll('.perk')
+    for (let perk of perks) {
+        let perkTop = parseInt(perk.style.top)
+        if (perkTop === 600){
+            grid.removeChild(perk)
+        }
+        if (perkTop >= 585){
+            perk.style.height = 599 - perkTop + 'px'
+        }
+        perk.style.top = (perkTop + 1) + 'px'
+
+    }
+}
+
+function move_ball() {
     ball.position[0] += speed_x
     ball.position[1] += speed_y
 }
 
-function test_dot(left, top) {
-
-
-    ball.style.left = left + 'px'
-    ball.style.top = top + 'px'
-    draw_ball()
-
-
-}
-function get_paddle_coords() {
-    let paddle_width = parseInt(paddle.style.width)
-    let paddle_left = parseInt(paddle.style.left)
-    let paddle_area_x = []
-    for (let i = 0; i < paddle_width; i++) {
-        paddle_area_x.push(paddle_left + i)
-    }
-    paddle.x_area = paddle_area_x
-}
 function check_collision() {
-    // //block collison
+    // //block collision
     for (let block of blocklist) {
         const found_x = ball.x_area.some(r => block.x_area.includes(r))
         const found_y = ball.y_area.some(r => block.y_area.includes(r))
@@ -106,21 +103,19 @@ function check_collision() {
             speed_x = speed_x * 1
             speed_y = speed_y * - 1
             block.style.backgroundColor = 'transparent'
+            initRandomPerk(block)
             grid.removeChild(block)
             break
         }
-
     }
-    //grid collison
+    //grid collision
     //side collision
     if (ball.x_area.includes(1200) || ball.x_area.includes(0)) {
         speed_x = speed_x * -1
-
     }
     //side collision
     else if (ball.y_area.includes(0)) {
         speed_y = speed_y * -1
-
     }
     //bottom collision
     else if (ball.y_area.includes(600)) {
@@ -137,22 +132,44 @@ function check_collision() {
         if (touch_paddle) {
             speed_y = speed_y * -1
         }
-
-
     }
+}
+
+function initRandomPerk(block){
+    if (Math.floor(Math.random()*10) <= 2) {
+        let chosenPerk = allPerks[Math.floor(Math.random() * allPerks.length)]
+        let perk = document.createElement('div')
+        debugger
+        perk.classList.add('perk', chosenPerk)
+        perk.style.left = block.x_area[Math.floor(block.x_area.length / 2)] + 'px'
+        perk.style.top = block.style.top
+        grid.appendChild(perk)
+    }
+}
+
+function initPerkNoFallDown() {
+
+}
+
+function get_paddle_coords() {
+    let paddle_width = parseInt(paddle.style.width)
+    let paddle_left = parseInt(paddle.style.left)
+    let paddle_area_x = []
+    for (let i = 0; i < paddle_width; i++) {
+        paddle_area_x.push(paddle_left + i)
+    }
+    paddle.x_area = paddle_area_x
 }
 
 function get_ball_coords() {
     const top = parseInt(ball.style.top)
     const left = parseInt(ball.style.left)
     const width = parseInt(ball.style.width)
-    const height = parseInt(ball.style.height)
     let ball_x_area = [];
     let ball_y_area = [];
     for (let i = 0; i <= width; i++) {
         ball_x_area.push(left + i)
         ball_y_area.push(top + i)
-
     }
     ball.x_area = ball_x_area
     ball.y_area = ball_y_area
@@ -205,41 +222,28 @@ function init_blocks(grid) {
             left = left + 100;
         }
         left = 40
-
     }
     return blocklist;
 }
 
-
 function init_ball(paddle, grid) {
-    let gridwidth = 1200
     let ball = document.createElement('div')
     ball.classList.add('ball');
-    // ball.style.left = Math.floor(gridwidth / 2) - 20 + 'px'
-    // ball.style.bottom = '30px'
     ball.style.width = '40px'
     ball.style.height = '40px'
     grid.appendChild(ball);
     return ball;
-
 }
+
 function draw_ball() {
     ball.style.left = ball.position[0] + 'px'
     ball.style.top = ball.position[1] + 'px'
-}
-function initGame() {
-    const grid = document.querySelector('.grid')
-    const paddle = init_paddle(grid)
-    const blocklist = init_blocks(grid)
-    const ball = init_ball(paddle, grid)
-
 }
 
 function game_over() {
     clearInterval(document.run)
     clearInterval(document.ball_movement)
     alert('You Lost!')
-
 }
 
 

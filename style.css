@@ -31,3 +31,9 @@ position: absolute;
     color: red;
     font-size: 25px;
 }
+.perk{
+    position: absolute;
+    background-color: darkblue;
+    width: 15px;
+    height: 15px;
+}
