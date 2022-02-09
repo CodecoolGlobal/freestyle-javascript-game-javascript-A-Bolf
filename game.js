@@ -139,7 +139,6 @@ function initRandomPerk(block){
     if (Math.floor(Math.random()*10) <= 2) {
         let chosenPerk = allPerks[Math.floor(Math.random() * allPerks.length)]
         let perk = document.createElement('div')
-        debugger
         perk.classList.add('perk', chosenPerk)
         perk.style.left = block.x_area[Math.floor(block.x_area.length / 2)] + 'px'
         perk.style.top = block.style.top
@@ -148,7 +147,7 @@ function initRandomPerk(block){
 }
 
 function initPerkNoFallDown() {
-
+    setTimeout()
 }
 
 function get_paddle_coords() {
