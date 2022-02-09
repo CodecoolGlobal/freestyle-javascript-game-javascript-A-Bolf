@@ -3,19 +3,22 @@
     width: 1200px;
     height: 600px;
     border: 5px solid;
+    border-radius: 10px;
+    border-bottom: 8px dashed;
+    background-image: url("images/arcade-background.jpg");
 }
 
 
 .block{
 position: absolute;
+    border-radius: 5px;
  /* margin-left: 3px; */
 }
 
 .paddle{
     position: absolute;
-    bottom: 10px;
-    height: 20px;
-    background-color:red;
+    background-color:cyan;
+    border-radius: 5px;
 }
 
 .ball{

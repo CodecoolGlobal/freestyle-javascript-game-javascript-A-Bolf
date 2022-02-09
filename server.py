@@ -12,3 +12,7 @@ def main():
 def game():
     difficulty = request.args.get('difficulty')
     return render_template('index.html', difficulty=difficulty)
+
+
+if __name__ == '__main__':
+    app.run()
