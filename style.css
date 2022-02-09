@@ -8,10 +8,7 @@
 
 .block{
 position: absolute;
- width: 100px;
- height: 20px;
- background-color: blue;
- border: 3px solid white;
+ /* margin-left: 3px; */
 }
 
 .paddle{
@@ -22,9 +19,11 @@ position: absolute;
 }
 
 .ball{
-    width: 40px;
-    height: 40px;
     position: absolute;
     background-color:green;
     border-radius: 50%;
+}
+
+.block.dead{
+    background-color:transparent
 }
