@@ -27,3 +27,7 @@ position: absolute;
 .block.dead{
     background-color:transparent
 }
+.lives{
+    color: red;
+    font-size: 25px;
+}

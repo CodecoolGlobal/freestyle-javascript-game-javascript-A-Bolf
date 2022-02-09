@@ -4,15 +4,19 @@ while (!Number.isInteger(blocknumber) || blocknumber > 60 || blocknumber < 5) {
     console.log(!Number.isInteger(blocknumber))
     blocknumber = parseInt(window.prompt("Enter block number"))
 }
+let lives = 3
+const lifecount = document.querySelector('.lives')
+let paddlewidth = 150;
+const gridwidth = 1200;
 const grid = document.querySelector('.grid')
 const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ball = init_ball(paddle, grid)
 ball.first_shot = true;
-ball.position = [580, 530]
+ball.position = [580, 525]
 draw_ball()
-let speed_x = -10
-let speed_y = -10
+let speed_x = -2
+let speed_y = -2
 document.addEventListener('keydown', (event) => current_key = event.key)
 document.addEventListener('keyup', () => current_key = "")
 isrunning = true
@@ -38,20 +42,24 @@ function main() {
 
     }
     draw_ball()
+    get_paddle_coords()
     get_ball_coords()
     check_collision()
+    lifecount.textContent = 'lives: ' + lives
     if (has_won()) {
         clearInterval(document.run)
         clearInterval(document.ball_movement)
         alert('You won')
+    }
+    if (lives === 0) {
+        isrunning = false;
     }
 
 }
 document.run = setInterval(main, 5)
 function init_paddle(grid) {
 
-    let paddlewidth = 150;
-    let gridwidth = 1200
+
     let paddle = document.createElement('div');
     paddle.classList.add('paddle');
     paddle.style.width = paddlewidth + 'px'
@@ -80,9 +88,17 @@ function test_dot(left, top) {
 
 
 }
+function get_paddle_coords() {
+    let paddle_width = parseInt(paddle.style.width)
+    let paddle_left = parseInt(paddle.style.left)
+    let paddle_area_x = []
+    for (let i = 0; i < paddle_width; i++) {
+        paddle_area_x.push(paddle_left + i)
+    }
+    paddle.x_area = paddle_area_x
+}
 function check_collision() {
     // //block collison
-    // document.querySelectorAll('.block')
     for (let block of blocklist) {
         const found_x = ball.x_area.some(r => block.x_area.includes(r))
         const found_y = ball.y_area.some(r => block.y_area.includes(r))
@@ -96,12 +112,32 @@ function check_collision() {
 
     }
     //grid collison
+    //side collision
     if (ball.x_area.includes(1200) || ball.x_area.includes(0)) {
         speed_x = speed_x * -1
 
     }
-    else if (ball.y_area.includes(0) || ball.y_area.includes(600)) {
+    //side collision
+    else if (ball.y_area.includes(0)) {
         speed_y = speed_y * -1
+
+    }
+    //bottom collision
+    else if (ball.y_area.includes(600)) {
+        clearInterval(document.ball_movement)
+        ball.first_shot = true;
+        ball.position = [580, 525]
+        speed_y = -2
+        lives--
+        paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
+    }
+    //paddle collision
+    if (ball.y_area.includes(570)) {
+        const touch_paddle = ball.x_area.some(r => paddle.x_area.includes(r))
+        if (touch_paddle) {
+            speed_y = speed_y * -1
+        }
+
 
     }
 }
@@ -199,8 +235,10 @@ function initGame() {
 
 }
 
-function game_over(haswon) {
-    haswon ? console.log('you won') : console.log('you lost')
+function game_over() {
+    clearInterval(document.run)
+    clearInterval(document.ball_movement)
+    alert('You Lost!')
 
 }
 
