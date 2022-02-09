@@ -1,9 +1,6 @@
 let current_key = "";
-let blocknumber;
-while (!Number.isInteger(blocknumber) || blocknumber > 60 || blocknumber < 5) {
-    console.log(!Number.isInteger(blocknumber))
-    blocknumber = parseInt(window.prompt("Enter block number"))
-}
+
+
 let lives = 3
 const lifecount = document.querySelector('.lives')
 let paddlewidth = 150;
@@ -182,15 +179,40 @@ function get_block_coords(block) {
 }
 
 
+function get_difficulty_choice() {
+    let block_input = ""
+    while (!['EASY', 'NORMAL', 'EXTREME'].includes(block_input.toUpperCase())) {
+
+        block_input = window.prompt("Type EASY, NORMAL or EXTREME to choose difficulty!")
+        if (typeof block_input === "string") {
+            switch (block_input.toUpperCase()) {
+                case 'EASY':
+                    return [4, 11];
+                case 'NORMAL':
+                    return [5, 11];
+                case 'EXTREME':
+                    return [8, 11];
+
+            }
+        }
+    }
+}
+
 
 function init_blocks(grid) {
+    let difficulty = get_difficulty_choice();
+
     let left = 40
-    let top = [25, 50, 75, 100]
-    let maxrow = 4;
-    let maxcol = 11;
+    let top = [25, 50, 75, 100, 125, 150, 175, 200]
+    let maxrow = difficulty[0];
+    let maxcol = difficulty[1];
+    console.log(maxrow + ' ' + maxcol)
+
     let blocklist = [];
-    let colorlist = ['blue', 'pink', 'purple', 'green', 'yellow', 'orange'];
+    let colorlist = ['cornflowerblue', 'crimson', 'darkgrey', 'green', 'deeppink', 'dimgrey', 'goldenrod', 'indianred', 'lightcoral', 'lightpink', 'lightgreen']
+    let colorlist2 = ['#FF0000', '#FF3300', '#FF0033', '#FF3333', '#FF0066', '#FF3366', '#FF0099', '#FF3399', '#FF00CC', '#FF33CC', '#FF00FF'];
     for (let row = 0; row !== maxrow; row++) {
+
         for (let col = 0; col !== maxcol; col++) {
             let block = document.createElement('div')
             block.classList.add('block')
@@ -198,7 +220,7 @@ function init_blocks(grid) {
             block.style.top = top[Math.floor((row))] + "px"
             block.style.width = '100px'
             block.style.height = '20px'
-            block.style.backgroundColor = colorlist[col % 6]
+            block.style.backgroundColor = colorlist[col % colorlist.length]
             get_block_coords(block)
             blocklist.push(block)
             grid.appendChild(block)
