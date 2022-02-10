@@ -143,6 +143,8 @@ function check_collision() {
         const touch_y_paddle = ball.y_area.some(r => paddle.y_area.includes(r))
         if (touch_x_paddle && touch_y_paddle) {
             speed_y = speed_y * -1
+            audio_player.src='static/boing.mp3'
+            audio_player.play()
         }
     }
     const perks = document.querySelectorAll('.perk')
