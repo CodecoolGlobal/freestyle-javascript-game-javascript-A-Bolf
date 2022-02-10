@@ -1,8 +1,11 @@
+body{
+    background-color: fuchsia;
+}
 .grid{
     position: absolute;
     width: 1900px;
     height: 850px;
-    top: 50px;
+    top: 0px;
     border: 5px solid #01fdfd;
     border-radius: 10px;
     border-bottom: 8px dashed #01fdfd;
@@ -32,8 +35,12 @@ position: absolute;
     background-color:transparent
 }
 .lives{
-    color: red;
-    font-size: 25px;
+    left:885px;
+    font-weight: bolder;
+    position: absolute;
+    bottom: 1px;
+    color: #01fdfd;
+    font-size: 40px;
 }
 .perk{
     position: absolute;
