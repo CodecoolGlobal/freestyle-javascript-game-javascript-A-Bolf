@@ -81,11 +81,11 @@ function has_won() {
 }
 
 function play_audio(pathString){
+    if (!audio_player.paused){return}
     if (pathString!=='static/increase_paddle.mp3'){
 
-
         audio_player.src=pathString
-        audio_player.volume=1
+        audio_player.colume=1
         audio_player.play()
     }
     else{
@@ -214,7 +214,7 @@ function initPerkNoFallDown() {
 
 
 function init_paddle_big_perk(){
-    paddlewidth=paddlewidth*1.5
+    paddlewidth=paddlewidth+20
     paddle.style.width=paddlewidth+'px'
     play_audio('static/increase_paddle.mp3')
 
