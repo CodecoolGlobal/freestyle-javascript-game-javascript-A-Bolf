@@ -326,7 +326,7 @@ function init_blocks(grid) {
     let maxcol = difficulty[1]
 
     let blocklist = [];
-    let colorlist = ['cornflowerblue', 'crimson', 'darkgrey', 'green', 'deeppink', 'dimgrey', 'goldenrod', 'indianred', 'lightcoral', 'lightpink', 'lightgreen']
+    let colorlist = ['aqua', 'chartreuse', 'fuchsia', 'green', 'aquamarine', 'indigo', 'mediumturquoise', 'lawngreen', 'lightseagreen', 'mediumslateblue', 'steelblue']
     let colorlist2 = ['#FF0000', '#FF3300', '#FF0033', '#FF3333', '#FF0066', '#FF3366', '#FF0099', '#FF3399', '#FF00CC', '#FF33CC', '#FF00FF'];
     for (let row = 0; row !== maxrow; row++) {
 
