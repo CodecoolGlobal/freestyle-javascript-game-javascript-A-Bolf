@@ -51,7 +51,7 @@ position: absolute;
     height: 15px;
 }
 :root {
-    --backgroundColor: cyan;
+    --backgroundColor: fuchsia;
     --colorShadeA: rgb(106, 163, 137);
     --colorShadeB: rgb(121, 186, 156);
     --colorShadeC: rgb(150, 232, 195);
@@ -118,6 +118,15 @@ button.big-button:active::before {
     transform: translate3d(0, 0, -1em);
     box-shadow: 0 0 0 2px var(--colorShadeB), 0 0.25em 0 0 var(--colorShadeB);
 }
+.container{
+    position: absolute;
+    background-color: cyan;
+    width: 800px;
+    height: 300px;
+    border-radius: 20px;
+    left: calc(50% - 400px);
+    top: calc(50% - 150px);
+}
 .header{
     display: flex;
     font-size: 100px;
@@ -128,30 +137,29 @@ button.big-button:active::before {
     font-weight: bold;
 }
 .main{
-    align-content: center;
     background-color: var(--backgroundColor);
 }
 span.title.b{
-    color: darkblue;
+    color: blue;
 }
 span.title.r{
-    color: darkcyan;
+    color: lime;
 }
 span.title.e{
-    color: darkmagenta;
+    color: magenta;
 }
 span.title.a{
     color: darkred;
 }
 span.title.k{
-    color: darkslateblue;
+    color: deepskyblue;
 }
 span.title.o{
-    color: darkslategrey;
+    color: black;
 }
 span.title.u{
-    color: darkturquoise;
+    color: deeppink;
 }
 span.title.t{
-    color: darkorchid;
+    color: lawngreen;
 }
