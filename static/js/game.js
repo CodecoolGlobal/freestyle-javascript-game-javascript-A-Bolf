@@ -125,17 +125,18 @@ function move_ball() {
 function check_collision() {
     // //block collision
     for (let block of blocklist) {
-        const found_x = ball.x_area.some(r => block.x_area.includes(r))
-        const found_y = ball.y_area.some(r => block.y_area.includes(r))
-        if ((found_x && found_y) && block.style.backgroundColor !== 'transparent') {
-            play_audio('static/soft_beep.mp3')
-            score+=10
-            speed_y = speed_y * - 1
-            block.style.backgroundColor = 'transparent'
-            initRandomPerk(block)
-            grid.removeChild(block)
-
-            break
+        if (!block.destroyed){
+            const found_x = ball.x_area.some(r => block.x_area.includes(r))
+            const found_y = ball.y_area.some(r => block.y_area.includes(r))
+            if (found_x && found_y) {
+                play_audio('static/soft_beep.mp3')
+                score += 10
+                speed_y = speed_y * -1
+                block.destroyed = true
+                initRandomPerk(block)
+                grid.removeChild(block)
+                break
+            }
         }
     }
     //grid collision
