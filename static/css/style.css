@@ -1,11 +1,13 @@
 .grid{
     position: absolute;
-    width: 1200px;
-    height: 600px;
-    border: 5px solid;
+    width: 1900px;
+    height: 850px;
+    top: 50px;
+    border: 5px solid #01fdfd;
     border-radius: 10px;
-    border-bottom: 8px dashed;
+    border-bottom: 8px dashed #01fdfd;
     background-image: url("images/arcade-background.jpg");
+    background-position: center;
 }
 
 
@@ -17,13 +19,13 @@ position: absolute;
 
 .paddle{
     position: absolute;
-    background-color:cyan;
+    background-color: #01fdfd;
     border-radius: 5px;
 }
 
 .ball{
     position: absolute;
-    background-color:green;
+    background-color: #f500ff;
     border-radius: 50%;
 }
 

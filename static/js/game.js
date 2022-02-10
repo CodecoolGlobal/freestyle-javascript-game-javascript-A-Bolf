@@ -5,15 +5,16 @@ const difficulty = document.body.dataset.difficulty
 console.log('diff: '+difficulty)
 const lifecount = document.querySelector('.lives')
 let paddlewidth = 150;
-const gridwidth = 1200;
+const gridwidth = 1900;
+const gridheight = 850;
 const grid = document.querySelector('.grid')
 const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
+const ballsize=40
 const ball = init_ball(paddle, grid)
-const perks = []
 const allPerks = {'no-fall': initPerkNoFallDown}
 ball.first_shot = true;
-ball.position = [580, 525]
+ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
 draw_ball()
 let speed_x = -2
 let speed_y = -2
@@ -26,15 +27,9 @@ function main() {
         paddle.style.left = (parseInt(paddle.style.left) - 5) + 'px'
         if (ball.first_shot) ball.position[0] = ball.position[0] - 5
     }
-    else if (current_key === 'd' && parseInt(paddle.style.left) < 1045) {
+    else if (current_key === 'd' && parseInt(paddle.style.left) < gridwidth-paddlewidth-5) {
         paddle.style.left = (parseInt(paddle.style.left) + 5) + 'px'
         if (ball.first_shot) ball.position[0] = ball.position[0] + 5
-    }
-    else if (current_key === 'w') {
-        ball.position[1] += 5;
-    }
-    else if (current_key === 's') {
-        ball.position[1] -= 5;
     }
     else if (current_key === " " && ball.first_shot) {
         document.ball_movement = setInterval(move_ball, 5);
@@ -66,7 +61,7 @@ function init_paddle(grid) {
     paddle.style.width = paddlewidth + 'px'
     paddle.style.height = '20px'
     paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
-    paddle.style.top = '570px'
+    paddle.style.top = (gridheight-30)+'px'
     grid.appendChild(paddle);
 
     return paddle;
@@ -80,13 +75,15 @@ function movePerks() {
     let perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
         let perkTop = parseInt(perk.style.top)
-        if (perkTop === 600){
+        if (perkTop === gridheight){
             grid.removeChild(perk)
         }
-        if (perkTop >= 585){
-            perk.style.height = 599 - perkTop + 'px'
+        if (perkTop >= gridheight-15){
+            perk.style.height = (gridheight-1) - perkTop + 'px'
         }
-        perk.style.top = (perkTop + 1) + 'px'
+        perk.style.top = (perkTop + 1.7) + 'px'
+        console.log(perk)
+        console.log(perk.style.top)
 
     }
 }
@@ -112,7 +109,7 @@ function check_collision() {
     }
     //grid collision
     //side collision
-    if (ball.x_area.includes(1200) || ball.x_area.includes(0)) {
+    if (ball.x_area.includes(gridwidth) || ball.x_area.includes(0)) {
         speed_x = speed_x * -1
     }
     //side collision
@@ -120,23 +117,23 @@ function check_collision() {
         speed_y = speed_y * -1
     }
     //bottom collision
-    else if (ball.y_area.includes(600)) {
+    else if (ball.y_area.includes(gridheight)) {
         if (fallDown) {
             clearInterval(document.ball_movement)
             ball.first_shot = true;
-            ball.position = [580, 525]
+            ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
             speed_y = -2
             lives--
             paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
         }
         else {
             speed_y = speed_y * -1
-            grid.style.borderBottom = '8px dashed'
+            grid.style.borderBottom = '8px dashed cyan'
         }
         fallDown = true
     }
     //paddle collision
-    if (ball.y_area.includes(570)) {
+    if (ball.y_area.includes(gridheight-29)) {
         const touch_x_paddle = ball.x_area.some(r => paddle.x_area.includes(r))
         const touch_y_paddle = ball.y_area.some(r => paddle.y_area.includes(r))
         if (touch_x_paddle && touch_y_paddle) {
@@ -146,20 +143,20 @@ function check_collision() {
     const perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
         let yAxis = perk.y_area
-        console.log(yAxis)
-        if (yAxis.indexOf(570) != -1) {
+        if (yAxis.indexOf(gridheight-29) !== -1) {
         const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
         const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
         if (perkXTouchPaddle && perkYTouchPaddle) {
             let perkType = perk.perkType
             allPerks[perkType]()
+            grid.removeChild(perk)
         }
         }
     }
 }
 
 function initRandomPerk(block){
-    if (Math.floor(Math.random()*10) <= 2) {
+    if (Math.floor(Math.random()*10) <= 10) {
         let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length - 1))]
         let perk = document.createElement('div')
         perk.classList.add('perk')
@@ -171,7 +168,7 @@ function initRandomPerk(block){
 }
 
 function initPerkNoFallDown() {
-    grid.style.borderBottom = '8px solid'
+    grid.style.borderBottom = '8px solid cyan'
     fallDown = false
 }
 function getPerksCords() {
@@ -248,12 +245,12 @@ function get_block_coords(block) {
 
 
 function init_blocks(grid) {
-    let left = 40
+    let left = 20
     let top = [25, 50, 75, 100]
     let maxrow = 4;
-    let maxcol = 11;
+    let maxcol = (gridwidth-200)/100
     let blocklist = [];
-    let colorlist = ['blue', 'pink', 'purple', 'green', 'yellow', 'orange'];
+    let colorlist = ['blue', 'pink', 'red', 'green', 'yellow', 'orange'];
     for (let row = 0; row !== maxrow; row++) {
         for (let col = 0; col !== maxcol; col++) {
             let block = document.createElement('div')
@@ -266,9 +263,9 @@ function init_blocks(grid) {
             get_block_coords(block)
             blocklist.push(block)
             grid.appendChild(block)
-            left = left + 100;
+            left = left + 110;
         }
-        left = 40
+        left = 20
     }
     return blocklist;
 }
@@ -276,8 +273,8 @@ function init_blocks(grid) {
 function init_ball(paddle, grid) {
     let ball = document.createElement('div')
     ball.classList.add('ball');
-    ball.style.width = '40px'
-    ball.style.height = '40px'
+    ball.style.width = ballsize+'px'
+    ball.style.height = ballsize+'px'
     grid.appendChild(ball);
     return ball;
 }
