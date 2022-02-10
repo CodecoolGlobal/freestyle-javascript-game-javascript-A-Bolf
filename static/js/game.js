@@ -13,7 +13,8 @@ const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ballsize=40
 const ball = init_ball(paddle, grid)
-const allPerks = {'no-fall': initPerkNoFallDown}
+const allPerks = {'no-fall': initPerkNoFallDown, 'big-paddle': init_paddle_big_perk}
+/*const allPerks = {'no-fall': initPerkNoFallDown}*/
 ball.first_shot = true;
 ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
 let speed_x = -2
@@ -79,6 +80,22 @@ function has_won() {
     return !document.querySelector('.block')
 }
 
+function play_audio(pathString){
+    if (!audio_player.paused){return}
+    if (pathString!=='static/increase_paddle.mp3'){
+
+        audio_player.src=pathString
+        audio_player.colume=1
+        audio_player.play()
+    }
+    else{
+        audio_player.src=pathString
+        audio_player.volume=0.5
+        audio_player.play()
+    }
+}
+
+
 function movePerks() {
     let perks = document.querySelectorAll('.perk')
     let colorlist=['red','orange','yellow','green','blue','indigo','violet']
@@ -107,8 +124,8 @@ function check_collision() {
         const found_x = ball.x_area.some(r => block.x_area.includes(r))
         const found_y = ball.y_area.some(r => block.y_area.includes(r))
         if ((found_x && found_y) && block.style.backgroundColor !== 'transparent') {
-            audio_player.src='static/ding.mp3'
-            audio_player.play()
+            play_audio('static/soft_beep.mp3')
+
             speed_y = speed_y * - 1
             block.style.backgroundColor = 'transparent'
             initRandomPerk(block)
@@ -133,8 +150,8 @@ function check_collision() {
             ball.first_shot = true;
             ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
             speed_y = -2
-            audio_player.src='static/oops.mp3'
-            audio_player.play()
+            play_audio('static/oops.mp3')
+
             lives--
             paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
         }
@@ -150,10 +167,11 @@ function check_collision() {
         const touch_y_paddle = ball.y_area.some(r => paddle.y_area.includes(r))
         if (touch_x_paddle && touch_y_paddle) {
             speed_y = speed_y * -1
-            audio_player.src='static/boing.mp3'
-            audio_player.play()
+            play_audio('static/boop_shorter.mp3')
+
         }
     }
+    //perk collision
     const perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
         let yAxis = perk.y_area
@@ -161,6 +179,7 @@ function check_collision() {
         const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
         const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
         if (perkXTouchPaddle && perkYTouchPaddle) {
+
             let perkType = perk.perkType
             allPerks[perkType]()
             grid.removeChild(perk)
@@ -171,19 +190,35 @@ function check_collision() {
 
 function initRandomPerk(block){
     if (Math.floor(Math.random()*10) <= 2) {
-        let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length - 1))]
+        let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length))]
         let perk = document.createElement('div')
         perk.classList.add('perk')
         perk.perkType = chosenPerk
+
         perk.style.left = block.x_area[Math.floor(block.x_area.length / 2)] + 'px'
         perk.style.top = block.style.top
         grid.appendChild(perk)
+
     }
 }
 
 function initPerkNoFallDown() {
+    if (fallDown) {
+        play_audio('static/lightsaber.mp3')
+    }
     grid.style.borderBottom = '8px solid cyan'
     fallDown = false
+    audio_player.play()
+}
+
+
+
+function init_paddle_big_perk(){
+    paddlewidth=paddlewidth+20
+    paddle.style.width=paddlewidth+'px'
+    play_audio('static/increase_paddle.mp3')
+
+
 }
 function getPerksCords() {
     let perks = document.querySelectorAll('.perk')
