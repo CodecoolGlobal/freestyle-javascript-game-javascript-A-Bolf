@@ -1,6 +1,5 @@
 let current_key = "";
-
-let blocknumber;
+const audio_player=document.querySelector('#audio_player')
 let fallDown = true
 let lives = 3
 const difficulty = document.body.dataset.difficulty
@@ -14,9 +13,9 @@ const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ballsize=40
 const ball = init_ball(paddle, grid)
+const allPerks = {'no-fall': initPerkNoFallDown}
 ball.first_shot = true;
 ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
-draw_ball()
 let speed_x = -2
 let speed_y = -2
 document.addEventListener('keydown', (event) => current_key = event.key)
@@ -26,6 +25,7 @@ function main() {
     isrunning ? console.log('running') : game_over()
     if (current_key === 'a' && parseInt(paddle.style.left) > 5) {
         paddle.style.left = (parseInt(paddle.style.left) - 5) + 'px'
+
         if (ball.first_shot) ball.position[0] = ball.position[0] - 5
     }
     else if (current_key === 'd' && parseInt(paddle.style.left) < gridwidth-paddlewidth-5) {
@@ -80,8 +80,7 @@ function movePerks() {
         if (perkTop === gridheight){
             grid.removeChild(perk)
         }
-        let perkHeight = 15
-        if (perkTop >= gridheight-perkHeight){
+        if (perkTop >= gridheight-15){
             perk.style.height = (gridheight-1) - perkTop + 'px'
         }
         perk.style.top = (perkTop + 1.7) + 'px'
@@ -100,12 +99,14 @@ function check_collision() {
     for (let block of blocklist) {
         const found_x = ball.x_area.some(r => block.x_area.includes(r))
         const found_y = ball.y_area.some(r => block.y_area.includes(r))
-        if ((found_x && found_y) && block.style.backgroundColor != 'transparent') {
-            speed_x = speed_x * 1
+        if ((found_x && found_y) && block.style.backgroundColor !== 'transparent') {
+            audio_player.src='static/ding.mp3'
+            audio_player.play()
             speed_y = speed_y * - 1
             block.style.backgroundColor = 'transparent'
             initRandomPerk(block)
             grid.removeChild(block)
+
             break
         }
     }
@@ -120,11 +121,13 @@ function check_collision() {
     }
     //bottom collision
     else if (ball.y_area.includes(gridheight)) {
-        if (document.fallDown) {
+        if (fallDown) {
             clearInterval(document.ball_movement)
             ball.first_shot = true;
             ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
             speed_y = -2
+            audio_player.src='static/oops.mp3'
+            audio_player.play()
             lives--
             paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
         }
@@ -132,7 +135,7 @@ function check_collision() {
             speed_y = speed_y * -1
             grid.style.borderBottom = '8px dashed cyan'
         }
-        document.fallDown = true
+        fallDown = true
     }
     //paddle collision
     if (ball.y_area.includes(gridheight-29)) {
@@ -142,7 +145,6 @@ function check_collision() {
             speed_y = speed_y * -1
         }
     }
-    // perk collision
     const perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
         let yAxis = perk.y_area
@@ -150,7 +152,6 @@ function check_collision() {
         const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
         const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
         if (perkXTouchPaddle && perkYTouchPaddle) {
-            const allPerks = {'no-fall': initPerkNoFallDown}
             let perkType = perk.perkType
             allPerks[perkType]()
             grid.removeChild(perk)
@@ -161,7 +162,6 @@ function check_collision() {
 
 function initRandomPerk(block){
     if (Math.floor(Math.random()*10) <= 2) {
-        const allPerks = {'no-fall': initPerkNoFallDown}
         let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length - 1))]
         let perk = document.createElement('div')
         perk.classList.add('perk')
@@ -174,7 +174,7 @@ function initRandomPerk(block){
 
 function initPerkNoFallDown() {
     grid.style.borderBottom = '8px solid cyan'
-    document.fallDown = false
+    fallDown = false
 }
 function getPerksCords() {
     let perks = document.querySelectorAll('.perk')
