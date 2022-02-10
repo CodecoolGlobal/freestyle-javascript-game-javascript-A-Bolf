@@ -8,6 +8,14 @@ app.secret_key='asdsegdthtf'
 def main():
     return render_template('main.html')
 
+@app.route('/winner')
+def won():
+    return render_template('winner.html')
+
+
+@app.route('/loser')
+def lost():
+    return render_template('loser.html')
 
 @app.route('/breakout')
 def game():
