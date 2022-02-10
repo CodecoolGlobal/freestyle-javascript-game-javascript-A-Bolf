@@ -108,12 +108,13 @@ function movePerks() {
         if (perkTop === gridheight){
             grid.removeChild(perk)
         }
+        //the perk slowly slide out at the grid
         if (perkTop >= gridheight-15){
             perk.style.height = (gridheight-1) - perkTop + 'px'
         }
         perk.style.top = (perkTop + 1.7) + 'px'
+        //lightening style
         perk.style.backgroundColor=colorlist[Math.floor(Math.random() * colorlist.length)]
-
     }
 }
 
@@ -180,12 +181,13 @@ function check_collision() {
     const perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
         let yAxis = perk.y_area
+        // the perk and the paddle at the same yAxis
         if (yAxis.indexOf(gridheight-29) !== -1) {
         const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
         const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
         if (perkXTouchPaddle && perkYTouchPaddle) {
-
             let perkType = perk.perkType
+            //init the perk skill
             allPerks[perkType]()
             grid.removeChild(perk)
         }
@@ -194,12 +196,14 @@ function check_collision() {
 }
 
 function initRandomPerk(block){
+    // 20% chance for perk
     if (Math.floor(Math.random()*10) <= 2) {
-        let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length))]
+        let allPerkType = Object.keys(allPerks)
+        let chosenPerk = allPerkType[Math.floor(Math.random() * (allPerkType.length))]
         let perk = document.createElement('div')
         perk.classList.add('perk')
         perk.perkType = chosenPerk
-
+        //place the perk to the destroyed block's place
         perk.style.left = block.x_area[Math.floor(block.x_area.length / 2)] + 'px'
         perk.style.top = block.style.top
         grid.appendChild(perk)
@@ -212,8 +216,6 @@ function init_perk_bonus_life(){
     lives+=1;
     score+=20
 }
-
-
 
 function initPerkNoFallDown() {
     if (fallDown) {
