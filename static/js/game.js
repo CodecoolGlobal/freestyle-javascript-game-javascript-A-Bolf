@@ -1,6 +1,5 @@
 let current_key = "";
-
-let blocknumber;
+const audio_player=document.querySelector('#audio_player')
 let fallDown = true
 let lives = 3
 const difficulty = document.body.dataset.difficulty
@@ -17,7 +16,6 @@ const ball = init_ball(paddle, grid)
 const allPerks = {'no-fall': initPerkNoFallDown}
 ball.first_shot = true;
 ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
-draw_ball()
 let speed_x = -2
 let speed_y = -2
 document.addEventListener('keydown', (event) => current_key = event.key)
@@ -27,6 +25,7 @@ function main() {
     isrunning ? console.log('running') : game_over()
     if (current_key === 'a' && parseInt(paddle.style.left) > 5) {
         paddle.style.left = (parseInt(paddle.style.left) - 5) + 'px'
+
         if (ball.first_shot) ball.position[0] = ball.position[0] - 5
     }
     else if (current_key === 'd' && parseInt(paddle.style.left) < gridwidth-paddlewidth-5) {
@@ -107,12 +106,14 @@ function check_collision() {
     for (let block of blocklist) {
         const found_x = ball.x_area.some(r => block.x_area.includes(r))
         const found_y = ball.y_area.some(r => block.y_area.includes(r))
-        if ((found_x && found_y) && block.style.backgroundColor != 'transparent') {
-            speed_x = speed_x * 1
+        if ((found_x && found_y) && block.style.backgroundColor !== 'transparent') {
+            audio_player.src='static/ding.mp3'
+            audio_player.play()
             speed_y = speed_y * - 1
             block.style.backgroundColor = 'transparent'
             initRandomPerk(block)
             grid.removeChild(block)
+
             break
         }
     }
@@ -132,6 +133,8 @@ function check_collision() {
             ball.first_shot = true;
             ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
             speed_y = -2
+            audio_player.src='static/oops.mp3'
+            audio_player.play()
             lives--
             paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
         }
