@@ -1,7 +1,6 @@
 let current_key = "";
 
 let blocknumber;
-
 let fallDown = true
 let lives = 3
 const difficulty = document.body.dataset.difficulty
@@ -76,6 +75,7 @@ function has_won() {
 
 function movePerks() {
     let perks = document.querySelectorAll('.perk')
+    let colorlist=['red','orange','yellow','green','blue','indigo','violet']
     for (let perk of perks) {
         let perkTop = parseInt(perk.style.top)
         if (perkTop === gridheight){
@@ -85,8 +85,7 @@ function movePerks() {
             perk.style.height = (gridheight-1) - perkTop + 'px'
         }
         perk.style.top = (perkTop + 1.7) + 'px'
-        console.log(perk)
-        console.log(perk.style.top)
+        perk.style.backgroundColor=colorlist[Math.floor(Math.random() * colorlist.length)]
 
     }
 }

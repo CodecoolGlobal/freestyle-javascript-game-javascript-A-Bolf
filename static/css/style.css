@@ -13,7 +13,6 @@
 
 .block{
 position: absolute;
-    border-radius: 5px;
  /* margin-left: 3px; */
 }
 
@@ -25,7 +24,7 @@ position: absolute;
 
 .ball{
     position: absolute;
-    background-color: #f500ff;
+    background-color: lime;
     border-radius: 50%;
 }
 
