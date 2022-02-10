@@ -251,7 +251,7 @@ function get_block_coords(block) {
 }
 
 
-function get_difficulty_choice() {
+function get_difficulty_choice(input) {
     let block_input = ""
     while (!['EASY', 'NORMAL', 'EXTREME'].includes(block_input.toUpperCase())) {
 
