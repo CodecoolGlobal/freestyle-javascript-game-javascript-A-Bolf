@@ -139,27 +139,36 @@ button.big-button:active::before {
 .main{
     background-color: var(--backgroundColor);
 }
+.diff-easy.big-button{
+    color: steelblue;
+}
+.diff-normal.big-button{
+    color: green;
+}
+.diff-extreme.big-button{
+    color: mediumblue;
+}
 span.title.b{
-    color: blue;
+    color: steelblue;
 }
 span.title.r{
-    color: lime;
+    color: indigo;
 }
 span.title.e{
-    color: magenta;
+    color: fuchsia;
 }
 span.title.a{
-    color: darkred;
+    color: green;
 }
 span.title.k{
-    color: deepskyblue;
+    color: mediumslateblue;
 }
 span.title.o{
-    color: black;
+    color: lightseagreen;
 }
 span.title.u{
     color: deeppink;
 }
 span.title.t{
-    color: lawngreen;
+    color: mediumblue;
 }
