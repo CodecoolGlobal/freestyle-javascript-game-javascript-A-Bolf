@@ -246,33 +246,33 @@ function get_block_coords(block) {
 }
 
 
-function get_difficulty_choice(input) {
+function get_difficulty_choice() {
     let block_input = ""
     while (!['EASY', 'NORMAL', 'EXTREME'].includes(block_input.toUpperCase())) {
+        block_input=document.body.dataset.difficulty;
 
-        block_input = window.prompt("Type EASY, NORMAL or EXTREME to choose difficulty!")
-        if (typeof block_input === "string") {
             switch (block_input.toUpperCase()) {
                 case 'EASY':
-                    return [4, 11];
+                    return [5, (gridwidth-200)/100];
                 case 'NORMAL':
-                    return [5, 11];
+                    return [7, (gridwidth-200)/100];
                 case 'EXTREME':
-                    return [8, 11];
+                    return [12, (gridwidth-200)/100];
 
             }
-        }
+
     }
 }
 
 
 function init_blocks(grid) {
-    let difficulty = document.body.dataset.difficulty;
-    console.log(difficulty)
+
+    let difficulty= get_difficulty_choice()
     let left = 20
-    let top = [25, 50, 75, 100, 125, 150, 175, 200]
-    let maxrow = 4;
-    let maxcol = (gridwidth-200)/100
+    let top = [25, 50, 75, 100, 125, 150, 175, 200,225,250,275,300,325,350,375,400]
+    let maxrow = difficulty[0];
+    let maxcol = difficulty[1]
+
     let blocklist = [];
     let colorlist = ['cornflowerblue', 'crimson', 'darkgrey', 'green', 'deeppink', 'dimgrey', 'goldenrod', 'indianred', 'lightcoral', 'lightpink', 'lightgreen']
     let colorlist2 = ['#FF0000', '#FF3300', '#FF0033', '#FF3333', '#FF0066', '#FF3366', '#FF0099', '#FF3399', '#FF00CC', '#FF33CC', '#FF00FF'];
