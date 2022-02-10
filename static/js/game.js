@@ -5,9 +5,12 @@ let lives = 3
 const difficulty = document.body.dataset.difficulty
 console.log('diff: '+difficulty)
 const lifecount = document.querySelector('.lives')
+const scorecount=document.querySelector('.lives.score')
+let score=0;
 let paddlewidth = 150;
 const gridwidth = 1900;
 const gridheight = 850;
+
 const grid = document.querySelector('.grid')
 const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
@@ -52,6 +55,7 @@ function main() {
     getPerksCords()
     check_collision()
     lifecount.textContent = 'lives: ' + lives
+    scorecount.textContent='score: '+score
     if (has_won()) {
         clearInterval(document.run)
         clearInterval(document.ball_movement)
@@ -125,7 +129,7 @@ function check_collision() {
         const found_y = ball.y_area.some(r => block.y_area.includes(r))
         if ((found_x && found_y) && block.style.backgroundColor !== 'transparent') {
             play_audio('static/soft_beep.mp3')
-
+            score+=10
             speed_y = speed_y * - 1
             block.style.backgroundColor = 'transparent'
             initRandomPerk(block)
@@ -151,7 +155,7 @@ function check_collision() {
             ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
             speed_y = -2
             play_audio('static/oops.mp3')
-
+            score-=50
             lives--
             paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
         }
@@ -209,6 +213,7 @@ function initPerkNoFallDown() {
     grid.style.borderBottom = '8px solid cyan'
     fallDown = false
     audio_player.play()
+    score+=15
 }
 
 
@@ -217,6 +222,7 @@ function init_paddle_big_perk(){
     paddlewidth=paddlewidth+20
     paddle.style.width=paddlewidth+'px'
     play_audio('static/increase_paddle.mp3')
+    score+=15
 
 
 }

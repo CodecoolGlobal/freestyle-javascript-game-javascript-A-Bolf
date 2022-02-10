@@ -44,6 +44,16 @@ position: absolute;
     color: #01fdfd;
     font-size: 40px;
 }
+.lives.score{
+    left:866px;
+    font-weight: bolder;
+    position: absolute;
+    bottom: 35px;
+    color: #01fdfd;
+    font-size: 40px;
+}
+
+
 .perk{
     position: absolute;
     background-color: darkblue;
