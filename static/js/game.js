@@ -13,7 +13,8 @@ const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ballsize=40
 const ball = init_ball(paddle, grid)
-const allPerks = {'no-fall': initPerkNoFallDown}
+const allPerks = {'no-fall': initPerkNoFallDown, 'big-paddle': init_paddle_big_perk}
+/*const allPerks = {'no-fall': initPerkNoFallDown}*/
 ball.first_shot = true;
 ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
 let speed_x = -2
@@ -79,6 +80,9 @@ function has_won() {
     return !document.querySelector('.block')
 }
 
+
+
+
 function movePerks() {
     let perks = document.querySelectorAll('.perk')
     let colorlist=['red','orange','yellow','green','blue','indigo','violet']
@@ -107,7 +111,7 @@ function check_collision() {
         const found_x = ball.x_area.some(r => block.x_area.includes(r))
         const found_y = ball.y_area.some(r => block.y_area.includes(r))
         if ((found_x && found_y) && block.style.backgroundColor !== 'transparent') {
-            audio_player.src='static/ding.mp3'
+            audio_player.src='static/soft_beep.mp3'
             audio_player.play()
             speed_y = speed_y * - 1
             block.style.backgroundColor = 'transparent'
@@ -150,7 +154,7 @@ function check_collision() {
         const touch_y_paddle = ball.y_area.some(r => paddle.y_area.includes(r))
         if (touch_x_paddle && touch_y_paddle) {
             speed_y = speed_y * -1
-            audio_player.src='static/boing.mp3'
+            audio_player.src='static/boop_shorter.mp3'
             audio_player.play()
         }
     }
@@ -162,8 +166,7 @@ function check_collision() {
         const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
         const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
         if (perkXTouchPaddle && perkYTouchPaddle) {
-            audio_player.src='static/powerup.mp3'
-            audio_player.play()
+
             let perkType = perk.perkType
             allPerks[perkType]()
             grid.removeChild(perk)
@@ -174,19 +177,31 @@ function check_collision() {
 
 function initRandomPerk(block){
     if (Math.floor(Math.random()*10) <= 2) {
-        let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length - 1))]
+        let chosenPerk = Object.keys(allPerks)[1]
         let perk = document.createElement('div')
         perk.classList.add('perk')
         perk.perkType = chosenPerk
         perk.style.left = block.x_area[Math.floor(block.x_area.length / 2)] + 'px'
         perk.style.top = block.style.top
         grid.appendChild(perk)
+
     }
 }
 
 function initPerkNoFallDown() {
     grid.style.borderBottom = '8px solid cyan'
     fallDown = false
+    audio_player.src='static/ding.mp3'
+    audio_player.play()
+}
+
+
+
+function init_paddle_big_perk(){
+    paddlewidth=paddlewidth*1.04
+    paddle.style.width=paddlewidth+'px'
+
+
 }
 function getPerksCords() {
     let perks = document.querySelectorAll('.perk')
