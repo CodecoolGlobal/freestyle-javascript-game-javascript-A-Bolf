@@ -12,7 +12,9 @@ body{
     background-image: url("images/arcade-background.jpg");
     background-position: center;
 }
-
+audio{
+    display: none;
+}
 
 .block{
 position: absolute;

@@ -32,6 +32,13 @@ function main() {
         paddle.style.left = (parseInt(paddle.style.left) + 5) + 'px'
         if (ball.first_shot) ball.position[0] = ball.position[0] + 5
     }
+
+    else if (current_key==='w' ){
+        ball.position[1] = ball.position[1]+5
+    }
+
+    else if (current_key==='s' ){
+        ball.position[1] = ball.position[1]-5}
     else if (current_key === " " && ball.first_shot) {
         document.ball_movement = setInterval(move_ball, 5);
 
@@ -47,7 +54,7 @@ function main() {
     if (has_won()) {
         clearInterval(document.run)
         clearInterval(document.ball_movement)
-        alert('You won')
+        window.location.replace('/winner')
     }
     if (lives === 0) {
         isrunning = false;
@@ -317,7 +324,7 @@ function draw_ball() {
 function game_over() {
     clearInterval(document.run)
     clearInterval(document.ball_movement)
-    alert('You Lost!')
+    window.location.replace("/loser");
 }
 
 
