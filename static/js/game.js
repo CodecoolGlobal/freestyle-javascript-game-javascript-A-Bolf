@@ -16,7 +16,7 @@ const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ballsize=40
 const ball = init_ball(paddle, grid)
-const allPerks = {'no-fall': initPerkNoFallDown, 'big-paddle': init_paddle_big_perk}
+const allPerks = {'no-fall': initPerkNoFallDown, 'big-paddle': init_paddle_big_perk, 'bonus-life': init_perk_bonus_life, 'no-fall2': initPerkNoFallDown, 'big-paddle2': init_paddle_big_perk, 'no-fall3': initPerkNoFallDown, 'big-paddle3': init_paddle_big_perk}
 /*const allPerks = {'no-fall': initPerkNoFallDown}*/
 ball.first_shot = true;
 ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
@@ -206,6 +206,14 @@ function initRandomPerk(block){
 
     }
 }
+
+function init_perk_bonus_life(){
+    play_audio('static/bonus_life.mp3')
+    lives+=1;
+    score+=20
+}
+
+
 
 function initPerkNoFallDown() {
     if (fallDown) {
