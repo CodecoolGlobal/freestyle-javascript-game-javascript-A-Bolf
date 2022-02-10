@@ -120,7 +120,7 @@ function check_collision() {
     }
     //bottom collision
     else if (ball.y_area.includes(gridheight)) {
-        if (grid.fallDown) {
+        if (document.fallDown) {
             clearInterval(document.ball_movement)
             ball.first_shot = true;
             ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
@@ -132,7 +132,7 @@ function check_collision() {
             speed_y = speed_y * -1
             grid.style.borderBottom = '8px dashed cyan'
         }
-        grid.fallDown = true
+        document.fallDown = true
     }
     //paddle collision
     if (ball.y_area.includes(gridheight-29)) {
@@ -174,7 +174,7 @@ function initRandomPerk(block){
 
 function initPerkNoFallDown() {
     grid.style.borderBottom = '8px solid cyan'
-    fallDown = false
+    document.fallDown = false
 }
 function getPerksCords() {
     let perks = document.querySelectorAll('.perk')
