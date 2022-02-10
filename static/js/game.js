@@ -152,6 +152,7 @@ function check_collision() {
             speed_y = speed_y * -1
         }
     }
+    //perk collision
     const perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
         let yAxis = perk.y_area
@@ -159,6 +160,8 @@ function check_collision() {
         const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
         const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
         if (perkXTouchPaddle && perkYTouchPaddle) {
+            audio_player.src='static/powerup.mp3'
+            audio_player.play()
             let perkType = perk.perkType
             allPerks[perkType]()
             grid.removeChild(perk)
