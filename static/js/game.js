@@ -14,7 +14,6 @@ const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ballsize=40
 const ball = init_ball(paddle, grid)
-const allPerks = {'no-fall': initPerkNoFallDown}
 ball.first_shot = true;
 ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
 draw_ball()
@@ -81,7 +80,8 @@ function movePerks() {
         if (perkTop === gridheight){
             grid.removeChild(perk)
         }
-        if (perkTop >= gridheight-15){
+        let perkHeight = 15
+        if (perkTop >= gridheight-perkHeight){
             perk.style.height = (gridheight-1) - perkTop + 'px'
         }
         perk.style.top = (perkTop + 1.7) + 'px'
@@ -120,7 +120,7 @@ function check_collision() {
     }
     //bottom collision
     else if (ball.y_area.includes(gridheight)) {
-        if (fallDown) {
+        if (grid.fallDown) {
             clearInterval(document.ball_movement)
             ball.first_shot = true;
             ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
@@ -132,7 +132,7 @@ function check_collision() {
             speed_y = speed_y * -1
             grid.style.borderBottom = '8px dashed cyan'
         }
-        fallDown = true
+        grid.fallDown = true
     }
     //paddle collision
     if (ball.y_area.includes(gridheight-29)) {
@@ -142,6 +142,7 @@ function check_collision() {
             speed_y = speed_y * -1
         }
     }
+    // perk collision
     const perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
         let yAxis = perk.y_area
@@ -149,6 +150,7 @@ function check_collision() {
         const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
         const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
         if (perkXTouchPaddle && perkYTouchPaddle) {
+            const allPerks = {'no-fall': initPerkNoFallDown}
             let perkType = perk.perkType
             allPerks[perkType]()
             grid.removeChild(perk)
@@ -159,6 +161,7 @@ function check_collision() {
 
 function initRandomPerk(block){
     if (Math.floor(Math.random()*10) <= 2) {
+        const allPerks = {'no-fall': initPerkNoFallDown}
         let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length - 1))]
         let perk = document.createElement('div')
         perk.classList.add('perk')
