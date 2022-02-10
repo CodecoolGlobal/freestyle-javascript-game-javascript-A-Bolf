@@ -1,9 +1,13 @@
+debugger;
+
 let current_key = "";
 
 let blocknumber;
 
 let fallDown = true
 let lives = 3
+const difficulty = document.body.dataset.difficulty
+console.log('diff: '+difficulty)
 const lifecount = document.querySelector('.lives')
 let paddlewidth = 150;
 const gridwidth = 1200;
@@ -11,7 +15,8 @@ const grid = document.querySelector('.grid')
 const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ball = init_ball(paddle, grid)
-const allPerks = { 'no-fall': initPerkNoFallDown() }
+const perks = []
+const allPerks = {'no-fall': initPerkNoFallDown}
 ball.first_shot = true;
 ball.position = [580, 525]
 draw_ball()
@@ -64,7 +69,9 @@ function init_paddle(grid) {
     let paddle = document.createElement('div');
     paddle.classList.add('paddle');
     paddle.style.width = paddlewidth + 'px'
+    paddle.style.height = '20px'
     paddle.style.left = Math.floor((gridwidth - paddlewidth) / 2) + 'px'
+    paddle.style.top = '570px'
     grid.appendChild(paddle);
 
     return paddle;
@@ -129,31 +136,36 @@ function check_collision() {
         }
         else {
             speed_y = speed_y * -1
+            grid.style.borderBottom = '8px dashed'
         }
         fallDown = true
     }
     //paddle collision
     if (ball.y_area.includes(570)) {
-        const touch_paddle = ball.x_area.some(r => paddle.x_area.includes(r))
-        if (touch_paddle) {
+        const touch_x_paddle = ball.x_area.some(r => paddle.x_area.includes(r))
+        const touch_y_paddle = ball.y_area.some(r => paddle.y_area.includes(r))
+        if (touch_x_paddle && touch_y_paddle) {
             speed_y = speed_y * -1
         }
     }
     const perks = document.querySelectorAll('.perk')
     for (let perk of perks) {
-        if (perk.y_area.includes(570)) {
-            const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
-            const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
-            if (perkXTouchPaddle && perkYTouchPaddle) {
-
-            }
+        let yAxis = perk.y_area
+        console.log(yAxis)
+        if (yAxis.indexOf(570) != -1) {
+        const perkXTouchPaddle = perk.x_area.some(r => paddle.x_area.includes(r))
+        const perkYTouchPaddle = perk.y_area.some(r => paddle.y_area.includes(r))
+        if (perkXTouchPaddle && perkYTouchPaddle) {
+            let perkType = perk.perkType
+            allPerks[perkType]()
+        }
         }
     }
 }
 
-function initRandomPerk(block) {
-    if (Math.floor(Math.random() * 10) <= 2) {
-        let chosenPerk = allPerks[Math.floor(Math.random() * allPerks.length)]
+function initRandomPerk(block){
+    if (Math.floor(Math.random()*10) <= 2) {
+        let chosenPerk = Object.keys(allPerks)[Math.floor(Math.random() * (Object.keys(allPerks).length - 1))]
         let perk = document.createElement('div')
         perk.classList.add('perk')
         perk.perkType = chosenPerk
@@ -164,7 +176,7 @@ function initRandomPerk(block) {
 }
 
 function initPerkNoFallDown() {
-
+    grid.style.borderBottom = '8px solid'
     fallDown = false
 }
 function getPerksCords() {
@@ -264,8 +276,8 @@ function init_blocks(grid) {
     console.log(difficulty)
     let left = 40
     let top = [25, 50, 75, 100, 125, 150, 175, 200]
-    let maxrow = difficulty[0];
-    let maxcol = difficulty[1];
+    let maxrow = 4;
+    let maxcol = 11;
     console.log(maxrow + ' ' + maxcol)
 
     let blocklist = [];
