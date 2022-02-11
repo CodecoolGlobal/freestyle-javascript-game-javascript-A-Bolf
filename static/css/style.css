@@ -37,7 +37,7 @@ position: absolute;
     background-color:transparent
 }
 .lives{
-    left:885px;
+    left:1285px;
     font-weight: bolder;
     position: absolute;
     bottom: 1px;
@@ -45,10 +45,10 @@ position: absolute;
     font-size: 40px;
 }
 .lives.score{
-    left:866px;
+    left:400px;
     font-weight: bolder;
     position: absolute;
-    bottom: 35px;
+    bottom: 1px;
     color: #01fdfd;
     font-size: 40px;
 }

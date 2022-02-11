@@ -10,14 +10,12 @@ let score=0;
 let paddlewidth = 150;
 const gridwidth = 1900;
 const gridheight = 850;
-
 const grid = document.querySelector('.grid')
 const paddle = init_paddle(grid)
 const blocklist = init_blocks(grid)
 const ballsize=40
 const ball = init_ball(paddle, grid)
 const allPerks = {'no-fall': initPerkNoFallDown, 'big-paddle': init_paddle_big_perk, 'bonus-life': init_perk_bonus_life, 'no-fall2': initPerkNoFallDown, 'big-paddle2': init_paddle_big_perk, 'no-fall3': initPerkNoFallDown, 'big-paddle3': init_paddle_big_perk}
-/*const allPerks = {'no-fall': initPerkNoFallDown}*/
 ball.first_shot = true;
 ball.position = [Math.floor((gridwidth-ballsize)/2),gridheight-70 ]
 let speed_x = -2
@@ -36,13 +34,6 @@ function main() {
         paddle.style.left = (parseInt(paddle.style.left) + 5) + 'px'
         if (ball.first_shot) ball.position[0] = ball.position[0] + 5
     }
-
-    else if (current_key==='w' ){
-        ball.position[1] = ball.position[1]+5
-    }
-
-    else if (current_key==='s' ){
-        ball.position[1] = ball.position[1]-5}
     else if (current_key === " " && ball.first_shot) {
         document.ball_movement = setInterval(move_ball, 5);
 
@@ -290,11 +281,6 @@ function get_block_coords(block) {
     let left = parseInt(block.style.left)
     let width = parseInt(block.style.width)
     let height = parseInt(block.style.height)
-    // const top_left = [top, left]
-    // const bot_left = [top + height, left]
-    // const top_right = [top, left + width]
-    // const bot_right = [top + height, left + width]
-
     const block_x_area = []
     const block_y_area = []
     for (let i = 0; i <= width; i++) {
