@@ -74,7 +74,7 @@ function init_paddle(grid) {
 function has_won() {
     return !document.querySelector('.block')
 }
-
+window.requestAnimationFrame()
 function play_audio(pathString){
     if (!audio_player.paused){return}
     if (pathString!=='static/increase_paddle.mp3'){
